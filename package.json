@@ -1,0 +1,18 @@
+{
+  "name": "usernamedomain",
+  "version": "1.0.0",
+  "description": "Utility to split a username/domain string into parts.",
+  "main": "usernamedomain.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com//GRT/usernamedomain.git"
+  },
+  "author": "Fake Bob Dobbs",
+  "devDependencies": {
+    "mocha": "^3.2.0",
+    "should": "^11.2.1"
+  }
+}
