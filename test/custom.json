@@ -1,0 +1,21 @@
+{
+    "type": "object",
+    "properties": {
+        "domain":{
+            "type": "string",
+            "pattern": "^[a-z0-9\\.\\-_]+$",
+            "minLength": 2,
+            "maxLength": 100            
+        },
+        "username": {
+            "type": "string",
+            "pattern": "^[a-z0-9\\.\\-_]+$",
+            "minLength": 2,
+            "maxLength": 100
+        }
+    },
+    "required": [
+        "domain",
+        "username"
+    ]
+}

@@ -1,5 +1,6 @@
-var should  = require('should');
-var UsernameDomainWrapper = require('../usernamedomain.js').factory({delimiter: '-', allowUntypedDomain: true});
+var should                = require('should');
+var jsonSchema            = require('./custom.json');
+var UsernameDomainWrapper = require('../usernamedomain.js').factory({delimiter: '-', domainSpecDelimiter: null, modelJsonSchema: jsonSchema});
 
 describe('CUSTOM DELIM WRAPPER', function(){
 

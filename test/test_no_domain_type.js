@@ -1,6 +1,8 @@
-var should  = require('should');
+var should                = require('should');
+var jsonSchema            = require('./custom.json');
+var UsernameDomainWrapper = require('../usernamedomain.js').factory({domainSpecDelimiter: null, modelJsonSchema: jsonSchema});
 
-var UsernameDomainWrapper = require('../usernamedomain.js').factory({allowUntypedDomain: true});
+
 
 describe('UNTYPED DOMAIN WRAPPER', function(){
   describe('no domain_type basic checks', function(){

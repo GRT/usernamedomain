@@ -1,0 +1,26 @@
+{
+    "type": "object",
+    "properties": {
+        "domain":{
+            "type": "string",
+            "pattern": "^[a-z0-9\\.\\-_]+$",
+            "minLength": 2,
+            "maxLength": 100            
+        },
+        "username": {
+            "type": "string",
+            "pattern": "^[a-z0-9\\.\\-_]+$",
+            "minLength": 2,
+            "maxLength": 100
+        },
+        "domain_type": {
+            "type": "string",
+            "enum": ["classcode", "site"]            
+        }
+    },
+    "required": [
+        "domain",
+        "domain_type",
+        "username"
+    ]
+}

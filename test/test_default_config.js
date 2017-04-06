@@ -44,27 +44,55 @@ describe('DEFAULT WRAPPER', function(){
      invalidCheck('numeric input', UsernameDomainWrapper.create(4));
      invalidCheck('bool input', UsernameDomainWrapper.create(true));
   });
+
+
+  describe('schema checks', function() {
+     invalidCheck('unknown domain type str', UsernameDomainWrapper.create('joe@tribe:foo.com'));
+     invalidCheck('unknown domain type obj', UsernameDomainWrapper.create({username: 'joe', domain_type: 'tribe', domain: 'foo.com'}));
+
+     invalidCheck('bad input obj', UsernameDomainWrapper.create({username: 'j#oe', domain_type: 'site', domain: 'foo.com'}));
+     invalidCheck('bad input obj2', UsernameDomainWrapper.create({username: 'joe', domain_type: 'site', domain: 'foo~com'}));
+     invalidCheck('bad input str', UsernameDomainWrapper.create('joe@site:(foo.com'));
+     invalidCheck('bad input str2', UsernameDomainWrapper.create('joe@site:$foo.com'));
+
+     invalidCheck('too long user', UsernameDomainWrapper.create('joeyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy@site:foo.com'));
+     invalidCheck('too long domain', UsernameDomainWrapper.create('joe@site:fooIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII.com'));
+     invalidCheck('too long user, obj', UsernameDomainWrapper.create({username: 'joeUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU', domain_type: 'site', domain: 'foo.com'}));
+     invalidCheck('too long user, obj', UsernameDomainWrapper.create({username: 'joe', domain_type: 'site', domain: 'foo.comZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ'}));
+
+     var opts = {username: 'john.jacob-jingleheimer_schmidt_the3rd', domain_type: 'classcode', domain: '123-111.abc_def'};
+     validCheck('classcode/uppercase type str', UsernameDomainWrapper.create('John.Jacob-Jingleheimer_Schmidt_the3rd@classcode:123-111.Abc_Def'), opts);
+     validCheck('classcode/uppercase type obj', UsernameDomainWrapper.create({username: 'John.Jacob-Jingleheimer_Schmidt_the3rd', domain_type: 'classcode', domain: '123-111.Abc_Def'}), opts);
+  });
+
+
 });
 
 
 
 
-function validCheck(testname, userdomain) {
-   describe(testname, function(){
+function validCheck(testname, userdomain, pOverrides) {
+    var overrides = pOverrides || {}
+    var domain = overrides.domain || 'bob.com';
+    var type   = overrides.domain_type || 'site';
+    var name   = overrides.username || 'jim';
+    var raw    = name + '@' + type + ':' + domain;
+
+    describe(testname, function(){
      it('is valid check', function(){
         userdomain.isValid().should.be.true();
      });
      it('username check', function(){
-        userdomain.getUsername().should.be.equal('jim');
+        userdomain.getUsername().should.be.equal(name);
      });
      it('domain check', function(){
-        userdomain.getDomain().should.be.equal('bob.com');
+        userdomain.getDomain().should.be.equal(domain);
      });
      it('domain type check', function(){
-        userdomain.getDomainType().should.be.equal('site');
+        userdomain.getDomainType().should.be.equal(type);
      });
      it('raw check', function(){
-        userdomain.getRaw().should.be.equal('jim@site:bob.com');
+        userdomain.getRaw().should.be.equal(raw);
      });
    });
 }
