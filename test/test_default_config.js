@@ -63,6 +63,8 @@ describe('DEFAULT WRAPPER', function(){
      var opts = {username: 'john.jacob-jingleheimer_schmidt_the3rd', domain_type: 'classcode', domain: '123-111.abc_def'};
      validCheck('classcode/uppercase type str', UsernameDomainWrapper.create('John.Jacob-Jingleheimer_Schmidt_the3rd@classcode:123-111.Abc_Def'), opts);
      validCheck('classcode/uppercase type obj', UsernameDomainWrapper.create({username: 'John.Jacob-Jingleheimer_Schmidt_the3rd', domain_type: 'classcode', domain: '123-111.Abc_Def'}), opts);
+
+     validCheck('classcode negative string', UsernameDomainWrapper.create({username: 'Jim', domain_type: 'classcode', domain: '-123'}), {domain_type:'classcode', domain:'-123'});
   });
 
 
@@ -77,21 +79,22 @@ function validCheck(testname, userdomain, pOverrides) {
     var type   = overrides.domain_type || 'site';
     var name   = overrides.username || 'jim';
     var raw    = name + '@' + type + ':' + domain;
+    var it_fn  = overrides.it || it;
 
     describe(testname, function(){
-     it('is valid check', function(){
+     it_fn('is valid check', function(){
         userdomain.isValid().should.be.true();
      });
-     it('username check', function(){
+     it_fn('username check', function(){
         userdomain.getUsername().should.be.equal(name);
      });
-     it('domain check', function(){
+     it_fn('domain check', function(){
         userdomain.getDomain().should.be.equal(domain);
      });
-     it('domain type check', function(){
+     it_fn('domain type check', function(){
         userdomain.getDomainType().should.be.equal(type);
      });
-     it('raw check', function(){
+     it_fn('raw check', function(){
         userdomain.getRaw().should.be.equal(raw);
      });
    });
