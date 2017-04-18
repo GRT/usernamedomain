@@ -1,6 +1,6 @@
 {
   "name": "usernamedomain",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Utility to split a username/domain string into parts.",
   "main": "usernamedomain.js",
   "scripts": {
